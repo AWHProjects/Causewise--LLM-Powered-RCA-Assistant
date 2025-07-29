@@ -1,0 +1,13 @@
+2024-01-29 12:45:10,123 INFO  [SipStack] SIP/2.0 200 OK received from 192.168.1.50:5060
+2024-01-29 12:45:15,456 WARN  [AudioManager] RTP packet loss detected: 5.2% on call ID 1234567890
+2024-01-29 12:45:20,789 ERROR [NetworkManager] Failed to register with SIP server 192.168.1.100: Connection timeout
+2024-01-29 12:45:25,012 INFO  [CallManager] Call established: Extension 1001 -> Extension 1002
+2024-01-29 12:45:30,345 WARN  [QoSManager] Jitter threshold exceeded: 150ms (threshold: 100ms)
+2024-01-29 12:45:35,678 ERROR [CodecManager] G.711 codec initialization failed: Insufficient memory
+2024-01-29 12:45:40,901 INFO  [ProvisioningManager] Configuration updated from server 192.168.1.200
+2024-01-29 12:45:45,234 WARN  [SecurityManager] TLS handshake failed with server 192.168.1.100:5061
+2024-01-29 12:45:50,567 ERROR [H323Stack] H.323 gatekeeper registration failed: Authentication error
+2024-01-29 12:45:55,890 INFO  [DirectoryManager] LDAP sync completed: 250 contacts updated
+2024-01-29 12:46:00,123 WARN  [PowerManager] PoE voltage low: 44.5V (minimum: 48V)
+2024-01-29 12:46:05,456 ERROR [FirmwareManager] Firmware update failed: Checksum mismatch
+2024-01-29 12:46:10,789 INFO  [CallManager] Call terminated: Duration 00:05:23, Quality score: 3.8/5.0

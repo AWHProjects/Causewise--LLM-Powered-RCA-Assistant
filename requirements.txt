@@ -2,3 +2,4 @@ flask
 langchain
 openai
 python-dotenv
+psutil

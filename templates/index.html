@@ -17,18 +17,41 @@
     </div>
     
     <div class="demo-section">
-        <h3>Try Demo</h3>
-        <p>Test the application with sample incident data:</p>
-        <form method="post">
-            <button type="submit" name="demo" value="true" class="demo-btn">Analyze Sample Incident</button>
-        </form>
+        <h3>Try Demo - Multiple Log Formats</h3>
+        <p>Test the application with different types of log data:</p>
+        <div class="demo-buttons">
+            <form method="post" style="display: inline;">
+                <button type="submit" name="demo_basic" value="true" class="demo-btn basic">Basic Log Format</button>
+            </form>
+            <form method="post" style="display: inline;">
+                <button type="submit" name="demo_splunk" value="true" class="demo-btn splunk">Splunk JSON</button>
+            </form>
+            <form method="post" style="display: inline;">
+                <button type="submit" name="demo_complex" value="true" class="demo-btn complex">Complex System Log</button>
+            </form>
+        </div>
+        <div class="supported-formats">
+            <h4>📁 Supported Formats:</h4>
+            <ul>
+                <li><strong>.log, .txt</strong> - Plain text logs with intelligent parsing</li>
+                <li><strong>.json</strong> - Splunk exports and structured JSON logs</li>
+                <li><strong>.csv</strong> - Comma-separated log data</li>
+                <li><strong>Auto-detection</strong> - Smart format recognition</li>
+            </ul>
+        </div>
     </div>
     
     {% if raw_log_data or analysis %}
         <div class="results-section">
+            {% if demo_type %}
+                <div class="demo-info">
+                    <h3>📊 Demo Type: {{ demo_type }}</h3>
+                </div>
+            {% endif %}
+            
             {% if raw_log_data %}
                 <div class="before-section">
-                    <h2>📋 Raw Incident Log (Before Analysis)</h2>
+                    <h2>📋 Raw Log Data (Before AI Analysis)</h2>
                     <pre class="raw-log">{{ raw_log_data }}</pre>
                 </div>
             {% endif %}

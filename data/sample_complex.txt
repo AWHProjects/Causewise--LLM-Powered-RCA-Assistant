@@ -1,0 +1,17 @@
+Jul 29 12:45:10 web-01 kernel: [12345.678901] TCP: request_sock_TCP: Possible SYN flooding on port 80. Sending cookies.  Check SNMP counters.
+Jul 29 12:45:10 web-01 httpd[2345]: [error] [client 192.168.1.100] File does not exist: /var/www/html/favicon.ico, referer: http://example.com/
+Jul 29 12:45:11 web-01 mysqld[3456]: 2024-07-29 12:45:11 [ERROR] InnoDB: Cannot allocate memory for the buffer pool
+Jul 29 12:45:11 web-01 mysqld[3456]: 2024-07-29 12:45:11 [ERROR] Plugin 'InnoDB' init function returned error.
+Jul 29 12:45:12 web-01 systemd[1]: mysql.service: Main process exited, code=exited, status=1/FAILURE
+Jul 29 12:45:12 web-01 systemd[1]: mysql.service: Failed with result 'exit-code'.
+Jul 29 12:45:13 web-01 httpd[2345]: [error] [client 192.168.1.101] (111)Connection refused: AH00957: HTTP: attempt to connect to 127.0.0.1:3306 (localhost) failed
+Jul 29 12:45:13 web-01 httpd[2345]: [error] [client 192.168.1.101] AH01114: HTTP: failed to make connection to backend: localhost
+Jul 29 12:45:14 web-01 kernel: [12346.789012] Out of memory: Kill process 3456 (mysqld) score 900 or sacrifice child
+Jul 29 12:45:14 web-01 kernel: [12346.789013] Killed process 3456 (mysqld) total-vm:2097152kB, anon-rss:1048576kB, file-rss:0kB, shmem-rss:0kB
+Jul 29 12:45:15 web-01 systemd[1]: mysql.service: Service RestartSec=100ms expired, scheduling restart.
+Jul 29 12:45:15 web-01 systemd[1]: mysql.service: Scheduled restart job, restart counter is at 1.
+Jul 29 12:45:15 web-01 systemd[1]: Stopped MySQL Community Server.
+Jul 29 12:45:15 web-01 systemd[1]: Starting MySQL Community Server...
+Jul 29 12:45:16 web-01 mysqld[4567]: 2024-07-29 12:45:16 [Note] /usr/sbin/mysqld (mysqld 8.0.33) starting as process 4567
+Jul 29 12:45:16 web-01 mysqld[4567]: 2024-07-29 12:45:16 [ERROR] InnoDB: Cannot allocate memory for the buffer pool
+Jul 29 12:45:16 web-01 systemd[1]: mysql.service: Main process exited, code=exited, status=1/FAILURE

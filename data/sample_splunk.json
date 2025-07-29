@@ -1,0 +1,35 @@
+[
+  {
+    "_time": "2024-07-29T12:45:10.000Z",
+    "host": "web-server-01",
+    "source": "/var/log/application.log",
+    "sourcetype": "application_logs",
+    "index": "main",
+    "_raw": "2024-07-29 12:45:10 ERROR [ConnectionPool] Connection timeout to database server db-prod-01:5432 after 30s",
+    "level": "ERROR",
+    "component": "ConnectionPool",
+    "message": "Connection timeout to database server db-prod-01:5432 after 30s"
+  },
+  {
+    "_time": "2024-07-29T12:45:12.000Z",
+    "host": "web-server-01",
+    "source": "/var/log/application.log",
+    "sourcetype": "application_logs",
+    "index": "main",
+    "_raw": "2024-07-29 12:45:12 WARN [RetryHandler] Attempting reconnection (attempt 1/3)",
+    "level": "WARN",
+    "component": "RetryHandler",
+    "message": "Attempting reconnection (attempt 1/3)"
+  },
+  {
+    "_time": "2024-07-29T12:46:15.000Z",
+    "host": "db-server-01",
+    "source": "/var/log/postgresql.log",
+    "sourcetype": "database_logs",
+    "index": "main",
+    "_raw": "2024-07-29 12:46:15 ERROR [PostgreSQL] DEADLOCK DETECTED: Process 1234 was waiting for ShareLock on transaction 567890",
+    "level": "ERROR",
+    "component": "PostgreSQL",
+    "message": "DEADLOCK DETECTED: Process 1234 was waiting for ShareLock on transaction 567890"
+  }
+]

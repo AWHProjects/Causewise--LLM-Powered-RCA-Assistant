@@ -1,0 +1,4 @@
+flask
+langchain
+ollama
+python-dotenv

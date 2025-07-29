@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Causewise RCA Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Causewise: LLM-Powered RCA Assistant</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="incident_file" required>
+        <button type="submit">Analyze</button>
+    </form>
+    {% if analysis %}
+        <h2>Incident Analysis:</h2>
+        <pre>{{ analysis }}</pre>
+    {% endif %}
+</body>
+</html>

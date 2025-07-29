@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Causewise RCA Assistant</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Removed external CDN for security - using vanilla JavaScript instead -->
 </head>
 <body>
     <h1>Causewise: LLM-Powered RCA Assistant</h1>
@@ -16,23 +16,23 @@
             <div class="stat-card">
                 <h4>CPU Usage</h4>
                 <div class="progress-bar">
-                    <div class="progress-fill cpu" style="width: {{ system_stats.cpu_percent }}%"></div>
+                    <div class="progress-fill cpu" style="width: {{ system_stats.cpu_percent|e }}%"></div>
                 </div>
-                <span>{{ system_stats.cpu_percent }}%</span>
+                <span>{{ system_stats.cpu_percent|e }}%</span>
             </div>
             <div class="stat-card">
                 <h4>Memory Usage</h4>
                 <div class="progress-bar">
-                    <div class="progress-fill memory" style="width: {{ system_stats.memory_percent }}%"></div>
+                    <div class="progress-fill memory" style="width: {{ system_stats.memory_percent|e }}%"></div>
                 </div>
-                <span>{{ system_stats.memory_used_mb }}MB / {{ system_stats.memory_total_mb }}MB ({{ system_stats.memory_percent }}%)</span>
+                <span>{{ system_stats.memory_used_mb|e }}MB / {{ system_stats.memory_total_mb|e }}MB ({{ system_stats.memory_percent|e }}%)</span>
             </div>
             <div class="stat-card">
                 <h4>Process Info</h4>
                 <div class="process-info">
-                    <span>PID: {{ process_info.pid }}</span>
-                    <span>Threads: {{ process_info.threads }}</span>
-                    <span>Memory: {{ process_info.memory_mb }}MB</span>
+                    <span>PID: {{ process_info.pid|e }}</span>
+                    <span>Threads: {{ process_info.threads|e }}</span>
+                    <span>Memory: {{ process_info.memory_mb|e }}MB</span>
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@
     {% if error %}
         <div class="error-section">
             <h2>❌ Error</h2>
-            <pre class="error-message">{{ error }}</pre>
+            <pre class="error-message">{{ error|e }}</pre>
         </div>
     {% endif %}
     
@@ -105,21 +105,21 @@
         <div class="results-section">
             {% if demo_type %}
                 <div class="demo-info">
-                    <h3>📊 Demo Type: {{ demo_type }}</h3>
+                    <h3>📊 Demo Type: {{ demo_type|e }}</h3>
                 </div>
             {% endif %}
             
             {% if raw_log_data %}
                 <div class="before-section">
                     <h2>📋 Raw Log Data (Before AI Analysis)</h2>
-                    <pre class="raw-log">{{ raw_log_data }}</pre>
+                    <pre class="raw-log">{{ raw_log_data|e }}</pre>
                 </div>
             {% endif %}
             
             {% if analysis %}
                 <div class="after-section">
                     <h2>🔍 AI-Powered Root Cause Analysis (After Processing)</h2>
-                    <pre class="analysis-result">{{ analysis }}</pre>
+                    <pre class="analysis-result">{{ analysis|e }}</pre>
                 </div>
             {% endif %}
         </div>
@@ -186,37 +186,45 @@
                 .then(data => {
                     const resultDiv = document.getElementById('validation-result');
                     if (data.validation_passed) {
-                        resultDiv.innerHTML = `
-                            <div class="validation-success">
-                                ✅ LLM Connection Successful<br>
-                                Model: ${data.model}<br>
-                                Response Time: ${data.response_time_ms}ms<br>
-                                Timestamp: ${data.timestamp}
-                            </div>
-                        `;
+                        resultDiv.innerHTML = '';
+                        const successDiv = document.createElement('div');
+                        successDiv.className = 'validation-success';
+                        successDiv.innerHTML = '✅ LLM Connection Successful<br>Model: ' +
+                            escapeHtml(data.model) + '<br>Response Time: ' +
+                            escapeHtml(data.response_time_ms) + 'ms<br>Timestamp: ' +
+                            escapeHtml(data.timestamp);
+                        resultDiv.appendChild(successDiv);
                     } else {
-                        resultDiv.innerHTML = `
-                            <div class="validation-error">
-                                ❌ LLM Connection Failed<br>
-                                Error: ${data.error || 'Unknown error'}<br>
-                                Timestamp: ${data.timestamp}
-                            </div>
-                        `;
+                        resultDiv.innerHTML = '';
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'validation-error';
+                        errorDiv.innerHTML = '❌ LLM Connection Failed<br>Error: ' +
+                            escapeHtml(data.error || 'Unknown error') + '<br>Timestamp: ' +
+                            escapeHtml(data.timestamp);
+                        resultDiv.appendChild(errorDiv);
                     }
                     
                     this.disabled = false;
                     this.textContent = '🔍 Test LLM Connection';
                 })
                 .catch(error => {
-                    document.getElementById('validation-result').innerHTML = `
-                        <div class="validation-error">
-                            ❌ Request Failed: ${error.message}
-                        </div>
-                    `;
+                    const resultDiv = document.getElementById('validation-result');
+                    resultDiv.innerHTML = '';
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'validation-error';
+                    errorDiv.innerHTML = '❌ Request Failed: ' + escapeHtml(error.message);
+                    resultDiv.appendChild(errorDiv);
                     this.disabled = false;
                     this.textContent = '🔍 Test LLM Connection';
                 });
         });
+        
+        // XSS Protection: HTML escape function
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
     </script>
 </body>
 </html>

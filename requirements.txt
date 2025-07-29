@@ -1,4 +1,6 @@
 flask
+flask-limiter
+markupsafe
 langchain
 openai
 python-dotenv

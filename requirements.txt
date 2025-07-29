@@ -1,4 +1,4 @@
 flask
 langchain
-ollama
+openai
 python-dotenv

@@ -7,13 +7,39 @@
 </head>
 <body>
     <h1>Causewise: LLM-Powered RCA Assistant</h1>
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="incident_file" required>
-        <button type="submit">Analyze</button>
-    </form>
-    {% if analysis %}
-        <h2>Incident Analysis:</h2>
-        <pre>{{ analysis }}</pre>
+    
+    <div class="upload-section">
+        <h3>Upload Incident Log</h3>
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="incident_file" required>
+            <button type="submit">Analyze File</button>
+        </form>
+    </div>
+    
+    <div class="demo-section">
+        <h3>Try Demo</h3>
+        <p>Test the application with sample incident data:</p>
+        <form method="post">
+            <button type="submit" name="demo" value="true" class="demo-btn">Analyze Sample Incident</button>
+        </form>
+    </div>
+    
+    {% if raw_log_data or analysis %}
+        <div class="results-section">
+            {% if raw_log_data %}
+                <div class="before-section">
+                    <h2>📋 Raw Incident Log (Before Analysis)</h2>
+                    <pre class="raw-log">{{ raw_log_data }}</pre>
+                </div>
+            {% endif %}
+            
+            {% if analysis %}
+                <div class="after-section">
+                    <h2>🔍 AI-Powered Root Cause Analysis (After Processing)</h2>
+                    <pre class="analysis-result">{{ analysis }}</pre>
+                </div>
+            {% endif %}
+        </div>
     {% endif %}
 </body>
 </html>

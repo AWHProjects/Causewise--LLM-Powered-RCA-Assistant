@@ -116,7 +116,46 @@
                 </div>
             {% endif %}
             
-            {% if analysis %}
+            {% if parsed_analysis %}
+                <!-- Thinking Section (if enabled) -->
+                {% if parsed_analysis.thinking %}
+                <div class="thinking-section">
+                    <h2>🧠 AI Thinking Process</h2>
+                    <div class="thinking-content">
+                        <pre class="thinking-text">{{ parsed_analysis.thinking|e }}</pre>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Step-by-Step Analysis -->
+                {% if parsed_analysis.step_analysis %}
+                <div class="step-analysis-section">
+                    <h2>🔍 AI-Powered Root Cause Analysis</h2>
+                    <div class="step-analysis-content">
+                        <div class="analysis-text">{{ parsed_analysis.step_analysis|safe }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- TLDR Section -->
+                {% if parsed_analysis.tldr %}
+                <div class="tldr-section">
+                    <h2>📋 TLDR - Main Issue Summary</h2>
+                    <div class="tldr-content">
+                        <p class="tldr-text">{{ parsed_analysis.tldr|e }}</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Metadata Section -->
+                {% if parsed_analysis.metadata %}
+                <div class="metadata-section">
+                    <h3>📊 Analysis Metadata</h3>
+                    <pre class="metadata-text">{{ parsed_analysis.metadata|e }}</pre>
+                </div>
+                {% endif %}
+            {% elif analysis %}
+                <!-- Fallback for non-parsed analysis -->
                 <div class="after-section">
                     <h2>🔍 AI-Powered Root Cause Analysis (After Processing)</h2>
                     <pre class="analysis-result">{{ analysis|e }}</pre>

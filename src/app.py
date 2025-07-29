@@ -3,7 +3,7 @@ from markupsafe import escape
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from parser import parse_log
-from llm import analyze_incident, validate_llm_connection
+from llm import analyze_incident, validate_llm_connection, parse_analysis_output
 from utils import save_uploaded_file
 from system_monitor import monitor
 import os
@@ -197,12 +197,18 @@ def analyze():
                                          system_stats=monitor.get_current_stats(),
                                          process_info=monitor.get_process_info())
     
+        # Parse the analysis output into structured components
+        parsed_analysis = None
+        if analysis:
+            parsed_analysis = parse_analysis_output(analysis)
+        
         # Get updated system stats after processing
         system_stats = monitor.get_current_stats()
         process_info = monitor.get_process_info()
         
         return render_template('index.html',
                              analysis=analysis,
+                             parsed_analysis=parsed_analysis,
                              raw_log_data=raw_log_data,
                              demo_type=demo_type,
                              system_stats=system_stats,

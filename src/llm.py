@@ -128,7 +128,7 @@ def analyze_incident(log_data, progress_callback=None):
     if progress_callback:
         progress_callback(20, "Input sanitization complete...")
     
-    # Create secure prompt with clear boundaries
+    # Create secure prompt with clear boundaries and structured output format
     prompt = (
         "TASK: Analyze the following incident log data and provide root cause analysis.\n"
         "INSTRUCTIONS: Focus only on technical analysis of the log data provided below. "
@@ -137,10 +137,26 @@ def analyze_incident(log_data, progress_callback=None):
         "--- BEGIN LOG DATA ---\n" +
         sanitized_log +
         "\n--- END LOG DATA ---\n\n"
-        "Please provide:\n"
-        "1. Summary of the incident\n"
-        "2. Likely root causes\n"
-        "3. Recommended mitigation steps"
+        "REQUIRED OUTPUT FORMAT:\n"
+        "Please structure your response EXACTLY as follows:\n\n"
+        "<think>\n"
+        "[Your detailed technical thinking process here - analyze each log entry, identify patterns, "
+        "consider relationships between events, evaluate potential causes, etc.]\n"
+        "</think>\n\n"
+        "## 🔍 Step-by-Step Analysis\n\n"
+        "### Step 1: Log Entry Review\n"
+        "[Detailed review of key log entries]\n\n"
+        "### Step 2: Pattern Identification\n"
+        "[Identify patterns, anomalies, and correlations]\n\n"
+        "### Step 3: Root Cause Assessment\n"
+        "[Technical analysis of likely root causes]\n\n"
+        "### Step 4: Impact Analysis\n"
+        "[Assessment of system impact and affected components]\n\n"
+        "### Step 5: Recommended Actions\n"
+        "[Specific technical recommendations and mitigation steps]\n\n"
+        "## 📋 TLDR - Main Issue Summary\n\n"
+        "[Provide a clear, non-technical explanation of the main issue that anyone can understand. "
+        "Explain what went wrong, why it happened, and what needs to be fixed in simple terms.]"
     )
     
     try:
@@ -190,3 +206,39 @@ def analyze_incident(log_data, progress_callback=None):
             progress_callback(100, f"Error: {str(e)}")
         
         return f"Error analyzing incident: {str(e)}\n\nPlease ensure LM Studio is running with the Local LLM Service enabled in App Settings > Developer tab."
+
+def parse_analysis_output(analysis_text):
+    """Parse the structured analysis output into separate components"""
+    result = {
+        'thinking': '',
+        'step_analysis': '',
+        'tldr': '',
+        'metadata': '',
+        'raw_output': analysis_text
+    }
+    
+    # Extract thinking section
+    think_match = re.search(r'<think>(.*?)</think>', analysis_text, re.DOTALL | re.IGNORECASE)
+    if think_match:
+        result['thinking'] = think_match.group(1).strip()
+        # Remove thinking section from main analysis
+        analysis_text = re.sub(r'<think>.*?</think>\s*', '', analysis_text, flags=re.DOTALL | re.IGNORECASE)
+    
+    # Extract TLDR section
+    tldr_match = re.search(r'##\s*📋\s*TLDR.*?\n\n(.*?)(?=\n\n---|$)', analysis_text, re.DOTALL | re.IGNORECASE)
+    if tldr_match:
+        result['tldr'] = tldr_match.group(1).strip()
+        # Remove TLDR from step analysis
+        analysis_text = re.sub(r'##\s*📋\s*TLDR.*', '', analysis_text, flags=re.DOTALL | re.IGNORECASE)
+    
+    # Extract metadata section
+    metadata_match = re.search(r'--- ANALYSIS METADATA ---\n(.*)', analysis_text, re.DOTALL)
+    if metadata_match:
+        result['metadata'] = metadata_match.group(1).strip()
+        # Remove metadata from step analysis
+        analysis_text = re.sub(r'\n\n--- ANALYSIS METADATA ---.*', '', analysis_text, flags=re.DOTALL)
+    
+    # The remaining content is the step-by-step analysis
+    result['step_analysis'] = analysis_text.strip()
+    
+    return result

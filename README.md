@@ -211,19 +211,35 @@ pre {
 
 ## 🚀 **Local Setup & Run Instructions**
 
+### Prerequisites
+1. **Install LM Studio** (v0.3.20 or later) from [https://lmstudio.ai/](https://lmstudio.ai/)
+2. **Download a Model** in LM Studio (e.g., `deepseek/qwen2-8b`)
+
+### LM Studio Configuration
+1. Open **LM Studio**
+2. Load your desired model (e.g., `deepseek/qwen2-8b`)
+3. Go to **App Settings > Developer tab**
+4. **Enable "Local LLM Service"** under "Local LLM Service (headless)"
+5. Verify the API is running by visiting `http://localhost:1234/v1/models` in your browser
+
+### Project Setup
 ```bash
 git clone https://github.com/YourUsername/Causewise.git
 cd Causewise
 pip install -r requirements.txt
-# Ensure Ollama server is running locally:
-ollama serve mistral
+# Update .env file with your model name if different from deepseek/qwen2-8b
 python src/app.py
 ```
 
 Navigate to `http://localhost:5000`.
 
+### Troubleshooting
+- **Connection refused error**: Ensure "Enable Local LLM Service" is checked in LM Studio settings
+- **Model not found**: Update the `MODEL_NAME` in your `.env` file to match your loaded model
+- **API timeout**: Larger models may take longer to respond; consider using a smaller model for faster responses
+
 ---
 
 ## 🎯 **Value to Employers (Pitch):**
 
-> **Causewise** highlights your ability to practically integrate advanced AI models into real-world workflows. By streamlining Root Cause Analysis (RCA) using local LLMs, you're showcasing your readiness for Technical Account Manager or Site Reliability Engineer roles—demonstrating an aptitude for proactive incident management, process improvement, and practical AI application in operations.
+> **Causewise** highlights your ability to practically integrate advanced AI models into real-world workflows. By streamlining Root Cause Analysis (RCA) using local LLMs via LM Studio, you're showcasing your readiness for Technical Account Manager or Site Reliability Engineer roles—demonstrating an aptitude for proactive incident management, process improvement, and practical AI application in operations while maintaining data privacy through local inference.
